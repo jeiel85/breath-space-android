@@ -1,0 +1,6 @@
+{
+  "name": "Breath Space",
+  "description": "A calm space for mindful deep breathing, offering slow, immersive animations, reminder timing, and mood logs to restore inner peace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer Breathing Ripples -->
+    <path
+        android:pathData="M 54,10 a 44,44 0 1,0 0,88 a 44,44 0 1,0 0,-88"
+        android:strokeColor="#80CBC4"
+        android:strokeWidth="0.8"
+        android:strokeAlpha="0.08"
+        android:fillColor="#00000000" />
+        
+    <path
+        android:pathData="M 54,18 a 36,36 0 1,0 0,72 a 36,36 0 1,0 0,-72"
+        android:strokeColor="#B39DDB"
+        android:strokeWidth="1.2"
+        android:strokeAlpha="0.15"
+        android:fillColor="#00000000" />
+        
+    <path
+        android:pathData="M 54,26 a 28,28 0 1,0 0,56 a 28,28 0 1,0 0,-56"
+        android:strokeColor="#F48FB1"
+        android:strokeWidth="1.0"
+        android:strokeAlpha="0.10"
+        android:fillColor="#00000000" />
+
+    <!-- Overlapping Breathing Petals / Rosette -->
+    <!-- Top Petal -->
+    <path
+        android:pathData="M 54,26 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#80CBC4"
+        android:fillAlpha="0.35" />
+
+    <!-- Bottom Petal -->
+    <path
+        android:pathData="M 54,54 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#80CBC4"
+        android:fillAlpha="0.35" />
+
+    <!-- Top-Right Petal -->
+    <path
+        android:pathData="M 66.12,33 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#B39DDB"
+        android:fillAlpha="0.35" />
+
+    <!-- Bottom-Left Petal -->
+    <path
+        android:pathData="M 41.88,47 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#B39DDB"
+        android:fillAlpha="0.35" />
+
+    <!-- Top-Left Petal -->
+    <path
+        android:pathData="M 41.88,33 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#F48FB1"
+        android:fillAlpha="0.35" />
+
+    <!-- Bottom-Right Petal -->
+    <path
+        android:pathData="M 66.12,47 a 14,14 0 1,0 0,28 a 14,14 0 1,0 0,-28"
+        android:fillColor="#F48FB1"
+        android:fillAlpha="0.35" />
+
+    <!-- Rosette Frame Border Ring -->
+    <path
+        android:pathData="M 54,33 a 21,21 0 1,0 0,42 a 21,21 0 1,0 0,-42"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.0"
+        android:strokeAlpha="0.30"
+        android:fillColor="#00000000" />
+
+    <!-- Center Grounding Core -->
+    <path
+        android:pathData="M 54,46 a 8,8 0 1,0 0,16 a 8,8 0 1,0 0,-16"
+        android:fillColor="#F5F5F0"
+        android:fillAlpha="0.80" />
+
+</vector>

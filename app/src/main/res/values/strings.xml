@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Breath Space</string>
+    <string name="app_description">마음의 안식을 위한 깊고 고요한 심호흡 공간</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_0">잠시 멈춰도 괜찮아요.</string>
+    <string name="onboarding_title_1">지금은 숨을 고르는 시간이에요.</string>
+    <string name="onboarding_title_2">당신의 호흡에 맞춰 천천히 움직여볼게요.</string>
+    <string name="onboarding_desc_0">바쁜 하루 마음에 쉼표가 필요할 때, 우리는 늘 이곳에 있습니다.</string>
+    <string name="onboarding_desc_1">눈을 감고 온전히 자신에게 집중해보세요. 짧은 호흡만으로도 충분합니다.</string>
+    <string name="onboarding_desc_2">하루 중 잠깐의 쉼이 필요한 순간에 조용히 알려드릴게요.</string>
+    <string name="allow_notifications_prompt">하루 중 잠깐의 쉼이 필요한 순간에 알려드릴게요.</string>
+    <string name="onboarding_button_next">다음</string>
+    <string name="onboarding_button_start">시작하기</string>
+    <string name="onboarding_skip">건너뛰기</string>
+
+    <!-- Home Greetings -->
+    <string name="greeting_morning">좋은 아침이에요. 오늘의 첫 숨을 천천히 시작해볼까요?</string>
+    <string name="greeting_day">잠깐 멈추고, 숨을 고를 시간이에요.</string>
+    <string name="greeting_night">오늘 하루도 수고했어요. 이제 천천히 내려놓아볼까요?</string>
+
+    <!-- Home Stats -->
+    <string name="stats_header">오늘의 호흡 기록</string>
+    <string name="stats_completed_today">오늘 완료한 세션</string>
+    <string name="stats_total_time">총 호흡 시간</string>
+    <string name="stats_unit_sessions">회</string>
+    <string name="stats_unit_min_sec">%1$02d분 %2$02d초</string>
+    <string name="stats_unit_sec">%1$d초</string>
+    <string name="not_started_yet">아직 오늘의 호흡 기록이 없습니다.</string>
+
+    <!-- Mood Check Screen -->
+    <string name="mood_check_question">지금 마음은 어떤가요?</string>
+    <string name="mood_check_subtitle">기분을 체크하면 그에 맞는 속도의 심호흡으로 안내할게요.</string>
+    <string name="mood_option_1">편안해요</string>
+    <string name="mood_option_2">조금 긴장돼요</string>
+    <string name="mood_option_3">지쳤어요</string>
+    <string name="mood_option_4">생각이 많아요</string>
+    <string name="mood_option_5">모르겠어요</string>
+    <string name="mood_skip">그냥 시작하기</string>
+
+    <!-- Breathing Session -->
+    <string name="phase_inhale">천천히 들이마셔요</string>
+    <string name="phase_hold">잠시 머물러요</string>
+    <string name="phase_exhale">부드럽게 내쉬어요</string>
+    <string name="phase_comfort">괜찮아요. 지금은 숨만 쉬면 돼요.</string>
+    <string name="phase_comfort_exhale">천천히 가슴을 비워주세요</string>
+
+    <!-- Breathing Buttons -->
+    <string name="button_pause">일시정지</string>
+    <string name="button_resume">다시 시작</string>
+    <string name="button_exit">그만하기</string>
+
+    <!-- Session Complete Screen -->
+    <string name="complete_title_1">잘했어요. 잠시 숨을 고른 것만으로도 충분해요.</string>
+    <string name="complete_title_2">조금은 가벼워졌기를 바라요.</string>
+    <string name="complete_title_3">지금의 호흡을 기억해보세요.</string>
+    <string name="button_retry">한 번 더 하기</string>
+    <string name="button_go_home">홈으로 돌아가기</string>
+    <string name="complete_subtitle">%1$d초 동안 천천히 호흡을 나눴습니다.</string>
+    <string name="mood_after_question">지금은 몸과 마음이 어떤가요?</string>
+    <string name="mood_after_option_1">편안해요</string>
+    <string name="mood_after_option_2">가뿐해요</string>
+    <string name="mood_after_option_3">그대로예요</string>
+    <string name="mood_after_option_4">잘 모르겠어요</string>
+
+    <!-- Settings & Notifications -->
+    <string name="settings_title">설정</string>
+    <string name="settings_meditation_time">기본 호흡 시간</string>
+    <string name="comp_duration_1">1분</string>
+    <string name="comp_duration_3">3분</string>
+    <string name="comp_duration_5">5분</string>
+    <string name="notif_settings_title">알림 설정</string>
+    <string name="notif_enable">알림 켜기</string>
+    <string name="notif_enable_desc">적절한 순간에 호흡 세션을 제안합니다.</string>
+    <string name="notif_time_select">알림 시간</string>
+    <string name="notif_frequency_select">하루 알림 횟수</string>
+    <string name="notif_freq_1">하루 1회</string>
+    <string name="notif_freq_2">하루 2회</string>
+    <string name="notif_freq_3">하루 3회</string>
+    <string name="button_notif_test">테스트 알림 보내기</string>
+    <string name="test_notif_sent">테스트 알림이 전송되었습니다.</string>
+    <string name="button_save_settings">설정 저장하기</string>
+    <string name="settings_saved_success">시간 알림 설정이 저장되고 활성화되었습니다.</string>
+
+    <!-- Disclaimer -->
+    <string name="medical_disclaimer_title">안내 및 고지</string>
+    <string name="medical_disclaimer_text">이 앱은 심호흡과 휴식을 돕기 위한 보조 도구이며, 건강 상태를 진단하거나 치료하지 않습니다.</string>
+    <string name="info_title">정보 및 고지</string>
+    <string name="info_app_story">Breath Space는 일상의 빠른 속도에서 벗어나 당신만의 템포를 되찾아 주기 위해 디자인되었습니다. 유려한 그라데이션 구체를 마주하며 오롯이 가슴 깊은 들숨과 날숨에만 흐름을 실어보세요.</string>
+    <string name="info_app_manage">앱 관리</string>
+    <string name="info_app_privacy">데이터는 서버로 송출되지 않으며 오로지 사용하시는 스마트폰의 격리구역 내에 안전하고 암호화되어 로컬 저장됩니다.</string>
+
+    <!-- String Arrays / Fallbacks -->
+    <string-array name="notification_titles">
+        <item>잠깐 멈춰도 괜찮아요.</item>
+        <item>쉼이 필요한 순간</item>
+        <item>호흡을 고르는 시간</item>
+        <item>조용한 1분의 가치</item>
+        <item>내 안의 평온함</item>
+    </string-array>
+    
+    <string-array name="notification_messages">
+        <item>잠깐 멈추고 숨을 쉬어볼까요?</item>
+        <item>지금, 마음을 조금 내려놓아도 괜찮아요.</item>
+        <item>1분만 천천히 숨을 골라볼까요?</item>
+        <item>바쁜 중에도 숨은 당신 편이에요.</item>
+        <item>짧은 쉼이 필요한 시간이에요.</item>
+    </string-array>
+</resources>

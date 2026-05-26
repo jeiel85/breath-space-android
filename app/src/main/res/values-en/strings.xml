@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">Breath Space</string>
+    <string name="app_description">A calm space for mindful deep breathing</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_0">It is okay to pause for a moment.</string>
+    <string name="onboarding_title_1">Now is the time to gather your breath.</string>
+    <string name="onboarding_title_2">We will move slowly at your own pace.</string>
+    <string name="onboarding_desc_0">When your busy day demands a mindful pause, we are always here.</string>
+    <string name="onboarding_desc_1">Close your eyes and focus entirely on yourself. A short breath is more than enough.</string>
+    <string name="onboarding_desc_2">We will quietly remind you when a brief rest is needed during the day.</string>
+    <string name="allow_notifications_prompt">We will quietly remind you when a brief rest is needed.</string>
+    <string name="onboarding_button_next">Next</string>
+    <string name="onboarding_button_start">Get Started</string>
+    <string name="onboarding_skip">Skip</string>
+
+    <!-- Home Greetings -->
+    <string name="greeting_morning">Good morning. Shall we begin today\'s first breath slowly?</string>
+    <string name="greeting_day">Time to pause and catch your breath.</string>
+    <string name="greeting_night">Thank you for your hard work today. Let\'s unwind slowly now.</string>
+
+    <!-- Home Stats -->
+    <string name="stats_header">Today\'s Breathing Stats</string>
+    <string name="stats_completed_today">Sessions Today</string>
+    <string name="stats_total_time">Total Time Spent</string>
+    <string name="stats_unit_sessions">times</string>
+    <string name="stats_unit_min_sec">%1$02dm %2$02ds</string>
+    <string name="stats_unit_sec">%1$ds</string>
+    <string name="not_started_yet">No sessions recorded today yet.</string>
+
+    <!-- Mood Check Screen -->
+    <string name="mood_check_question">How is your mind feeling right now?</string>
+    <string name="mood_check_subtitle">We will guide you through deep breathing at a pace that matches your current emotion.</string>
+    <string name="mood_option_1">Peaceful</string>
+    <string name="mood_option_2">Slightly Anxious</string>
+    <string name="mood_option_3">Exhausted</string>
+    <string name="mood_option_4">Overthinking</string>
+    <string name="mood_option_5">Not Sure</string>
+    <string name="mood_skip">Just Start</string>
+
+    <!-- Breathing Session -->
+    <string name="phase_inhale">Inhale slowly</string>
+    <string name="phase_hold">Hold gently</string>
+    <string name="phase_exhale">Exhale softly</string>
+    <string name="phase_comfort">It is okay. All you need to do right now is breathe.</string>
+    <string name="phase_comfort_exhale">Slowly empty your chest and let go</string>
+
+    <!-- Breathing Buttons -->
+    <string name="button_pause">Pause</string>
+    <string name="button_resume">Resume</string>
+    <string name="button_exit">Exit</string>
+
+    <!-- Session Complete Screen -->
+    <string name="complete_title_1">Well done. Just catching your breath is enough.</string>
+    <string name="complete_title_2">We hope you feel a little lighter now.</string>
+    <string name="complete_title_3">Remember the depth of this breath.</string>
+    <string name="button_retry">Breathe Again</string>
+    <string name="button_go_home">Return Home</string>
+    <string name="complete_subtitle">You breathed slowly and deeply for %1$d seconds.</string>
+    <string name="mood_after_question">How do your body and mind feel now?</string>
+    <string name="mood_after_option_1">Peaceful</string>
+    <string name="mood_after_option_2">Refreshed</string>
+    <string name="mood_after_option_3">The Same</string>
+    <string name="mood_after_option_4">Not Sure</string>
+
+    <!-- Settings & Notifications -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_meditation_time">Default Breathing Time</string>
+    <string name="comp_duration_1">1 min</string>
+    <string name="comp_duration_3">3 min</string>
+    <string name="comp_duration_5">5 min</string>
+    <string name="notif_settings_title">Notification Settings</string>
+    <string name="notif_enable">Enable Reminders</string>
+    <string name="notif_enable_desc">Receive gentle resting reminders during the day.</string>
+    <string name="notif_time_select">Reminder Scheduled Time</string>
+    <string name="notif_frequency_select">Daily Frequency</string>
+    <string name="notif_freq_1">Once a day</string>
+    <string name="notif_freq_2">Twice a day</string>
+    <string name="notif_freq_3">Three times a day</string>
+    <string name="button_notif_test">Send Test Notification</string>
+    <string name="test_notif_sent">Test notification has been sent.</string>
+    <string name="button_save_settings">Save Preferences</string>
+    <string name="settings_saved_success">Minding reminder settings saved successfully.</string>
+
+    <!-- Disclaimer -->
+    <string name="medical_disclaimer_title">Disclaimer &amp; Info</string>
+    <string name="medical_disclaimer_text">This app is a relaxation and breathing aid. It is not designed to diagnose, monitor, or treat any medical conditions.</string>
+    <string name="info_title">Information &amp; Disclaimers</string>
+    <string name="info_app_story">Breath Space is created to restore your unique frequency from the chaotic speed of modern life. Sit back and align your mind with the slow expansion of our soft floating orb.</string>
+    <string name="info_app_manage">Local Storage</string>
+    <string name="info_app_privacy">Your records never leave your phone. Data is stored entirely offline and securely inside encrypted local sandbox storage.</string>
+
+    <!-- String Arrays / Fallbacks -->
+    <string-array name="notification_titles">
+        <item>It\'s okay to pause for a bit.</item>
+        <item>A moment of quiet</item>
+        <item>Gather your breath</item>
+        <item>Value of a peaceful minute</item>
+        <item>Calm within you</item>
+    </string-array>
+    
+    <string-array name="notification_messages">
+        <item>Shall we stop and take a slow breath?</item>
+        <item>It is okay to let things go for a moment now.</item>
+        <item>Can we spend 1 minute collecting our focus?</item>
+        <item>Even when busy, your breath is on your side.</item>
+        <item>It\'s time for a short, soothing rest.</item>
+    </string-array>
+</resources>
