@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="마음의 안식을 위한 깊고 고요한 심호흡 공간 - Breath Space. 느린 애니메이션과 주기 알림, 오프라인 기분 로그.">
+  <meta name="theme-color" content="#060810">
+  <link rel="icon" type="image/png" href="assets/key-visual.png">
+  <meta property="og:title" content="숨 쉴 틈 - Breath Space">
+  <meta property="og:description" content="바쁜 일상 속에서 온전히 나를 위해 숨을 고르는 고요한 공간.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jeiel85.github.io/breath-space/">
+  <meta property="og:image" content="https://jeiel85.github.io/breath-space/docs/assets/key-visual.png">
+  <title>숨 쉴 틈 - Breath Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --midnight: #060810;
+      --card-bg: rgba(21, 27, 51, 0.65);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --soft-purple: #B39DDB;
+      --soft-mint: #80CBC4;
+      --soft-pink: #F48FB1;
+      --warm-ivory: #F5F5F0;
+      --muted-slate: #8A99AD;
+      --glow-purple: rgba(179, 157, 219, 0.35);
+      --glow-mint: rgba(128, 203, 196, 0.35);
+      --glow-pink: rgba(244, 143, 177, 0.35);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--midnight);
+      color: var(--warm-ivory);
+      font-family: 'Outfit', 'Noto Sans KR', 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(179, 157, 219, 0.12), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(128, 203, 196, 0.1), transparent 40%);
+    }
+
+    .shell {
+      width: min(1200px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    header {
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 8, 16, 0.8);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+      color: var(--warm-ivory);
+      text-decoration: none;
+    }
+
+    .brand span {
+      background: linear-gradient(135deg, var(--soft-purple), var(--soft-mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--muted-slate);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--warm-ivory);
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--warm-ivory);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-family: inherit;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--soft-purple), var(--soft-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      color: var(--muted-slate);
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      font-weight: 300;
+    }
+
+    /* Interactive Breathe Area */
+    .breathe-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 32px;
+      padding: 60px 40px;
+      max-width: 680px;
+      margin: 0 auto 80px auto;
+      box-shadow: var(--shadow);
+      text-align: center;
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated Breathing Orb */
+    .orb-wrapper {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      margin: 0 auto 40px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .orb-glow {
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-purple) 0%, transparent 70%);
+      filter: blur(24px);
+      transition: background 1.5s, transform 4s ease-in-out;
+    }
+
+    .orb-main {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(179, 157, 219, 0.4));
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      position: relative;
+      z-index: 2;
+      transition: transform 4s ease-in-out, background 1.5s, border-color 1.5s;
+      box-shadow: inset 0 8px 16px rgba(255, 255, 255, 0.3), 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Simulated Breathing Cycles via Classes managed by JS */
+    .breathe-container.inhale .orb-main {
+      transform: scale(1.4);
+      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(128, 203, 196, 0.5));
+      border-color: rgba(128, 203, 196, 0.6);
+    }
+    .breathe-container.inhale .orb-glow {
+      transform: scale(1.4);
+      background: radial-gradient(circle, var(--glow-mint) 0%, transparent 70%);
+    }
+
+    .breathe-container.hold .orb-main {
+      transform: scale(1.4);
+      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(244, 143, 177, 0.5));
+      border-color: rgba(244, 143, 177, 0.6);
+    }
+    .breathe-container.hold .orb-glow {
+      transform: scale(1.4);
+      background: radial-gradient(circle, var(--glow-pink) 0%, transparent 70%);
+    }
+
+    .breathe-container.exhale .orb-main {
+      transform: scale(0.9);
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(179, 157, 219, 0.3));
+      border-color: rgba(179, 157, 219, 0.4);
+    }
+    .breathe-container.exhale .orb-glow {
+      transform: scale(0.9);
+      background: radial-gradient(circle, var(--glow-purple) 0%, transparent 70%);
+    }
+
+    .breathe-status {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      transition: color 1s;
+      height: 40px;
+    }
+
+    .breathe-sub {
+      color: var(--muted-slate);
+      font-size: 1rem;
+      margin-bottom: 30px;
+      height: 24px;
+    }
+
+    .breathe-btn {
+      background: var(--soft-purple);
+      color: var(--midnight);
+      border: none;
+      padding: 16px 36px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 8px 24px rgba(179, 157, 219, 0.3);
+    }
+
+    .breathe-btn:hover {
+      background: var(--warm-ivory);
+      transform: scale(1.03);
+    }
+
+    .breathe-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Features Grid */
+    .features-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 50px;
+      letter-spacing: -0.5px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-bottom: 100px;
+    }
+
+    .feat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 36px;
+      transition: transform 0.3s, border-color 0.3s;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .feat-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .feat-icon {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .feat-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .feat-card p {
+      color: var(--muted-slate);
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 60px 0;
+      text-align: center;
+      color: var(--muted-slate);
+      font-size: 0.9rem;
+    }
+
+    footer p {
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--muted-slate);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--warm-ivory);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 50px 0 40px 0;
+      }
+      .breathe-container {
+        padding: 40px 20px;
+        border-radius: 24px;
+      }
+      .orb-wrapper {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 30px;
+      }
+      .orb-main {
+        width: 120px;
+        height: 120px;
+      }
+      .orb-glow {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="shell nav-container">
+      <a href="#" class="brand">
+        <span>숨 쉴 틈</span> Breath Space
+      </a>
+      <div class="nav-links">
+        <a href="#features" data-i18n="nav_features">기능 소개</a>
+        <a href="privacy.html" data-i18n="nav_privacy">개인정보처리방침</a>
+        <button class="lang-btn" id="langToggle">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="shell">
+    <section class="hero">
+      <h1 id="hero_title">잠시 멈추고,<br><span>숨을 고르는 공간</span></h1>
+      <p id="hero_desc">바쁜 하루 마음에 쉼표가 필요할 때, 당신의 심장박동을 진정시키고 온전한 평온을 되찾아 드립니다.</p>
+    </section>
+
+    <!-- Interactive Breathing Orb Simulator -->
+    <section class="breathe-container" id="breatheArea">
+      <div class="orb-wrapper">
+        <div class="orb-glow"></div>
+        <div class="orb-main"></div>
+      </div>
+      <div class="breathe-status" id="breatheStatus" data-i18n="orb_idle">준비되셨나요?</div>
+      <div class="breathe-sub" id="breatheSub" data-i18n="orb_sub_idle">아래 버튼을 눌러 모의 세션을 체험해보세요.</div>
+      <button class="breathe-btn" id="breatheBtn" data-i18n="btn_start">모의 호흡 시작하기</button>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+      <h2 class="features-title" id="features_title">당신의 호흡을 위한 편안함</h2>
+      <div class="features-grid">
+        <!-- Feat 1 -->
+        <div class="feat-card">
+          <span class="feat-icon">🧘</span>
+          <h3 data-i18n="feat1_title">정적인 몰입형 구체</h3>
+          <p data-i18n="feat1_desc">들숨과 머묾, 날숨에 맞춰 유려하게 움직이는 그라데이션 구체 애니메이션을 통해 잡념을 없애고 호흡에 편안히 집중할 수 있습니다.</p>
+        </div>
+        <!-- Feat 2 -->
+        <div class="feat-card">
+          <span class="feat-icon">🤍</span>
+          <h3 data-i18n="feat2_title">기분 상태별 최적 템포</h3>
+          <p data-i18n="feat2_desc">현재 느끼는 마음 상태에 따라 최적의 심호흡 주기 속도를 세심하게 처방하여 신진대사 완화와 평정을 적극적으로 이끕니다.</p>
+        </div>
+        <!-- Feat 3 -->
+        <div class="feat-card">
+          <span class="feat-icon">🔒</span>
+          <h3 data-i18n="feat3_title">안전한 완전 로컬 저장</h3>
+          <p data-i18n="feat3_desc">감정이나 호흡 로그를 수집하거나 서버로 보내지 않습니다. 모든 정보는 오로지 스마트폰 기기 내부 샌드박스에 완벽하게 오프라인 보관됩니다.</p>
+        </div>
+        <!-- Feat 4 -->
+        <div class="feat-card">
+          <span class="feat-icon">🔔</span>
+          <h3 data-i18n="feat4_title">주기적 쉼 알림</h3>
+          <p data-i18n="feat4_desc">하루 일상 중 잠시 숨을 고르기 좋은 최적의 쉼 주기를 설정하여 이완 루틴을 자연스러운 일과 생활 습관으로 가꿔보세요.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="shell">
+      <div class="footer-links">
+        <a href="https://github.com/jeiel85/breath-space" target="_blank">GitHub Repository</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+      <p>&copy; 2026 Aiden Park. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // i18n
+    const translations = {
+      ko: {
+        nav_features: "기능 소개",
+        nav_privacy: "개인정보처리방침",
+        hero_title: "잠시 멈추고,<br><span>숨을 고르는 공간</span>",
+        hero_desc: "바쁜 하루 마음에 쉼표가 필요할 때, 당신의 심장박동을 진정시키고 온전한 평온을 되찾아 드립니다.",
+        orb_idle: "준비되셨나요?",
+        orb_sub_idle: "아래 버튼을 눌러 모의 세션을 체험해보세요.",
+        btn_start: "모의 호흡 시작하기",
+        btn_stop: "호흡 세션 멈추기",
+        features_title: "당신의 호흡을 위한 편안함",
+        feat1_title: "정적인 몰입형 구체",
+        feat1_desc: "들숨과 머묾, 날숨에 맞춰 유려하게 움직이는 그라데이션 구체 애니메이션을 통해 잡념을 없애고 호흡에 편안히 집중할 수 있습니다.",
+        feat2_title: "기분 상태별 최적 템포",
+        feat2_desc: "현재 느끼는 마음 상태에 따라 최적의 심호흡 주기 속도를 세심하게 처방하여 신진대사 완화와 평정을 적극적으로 이끕니다.",
+        feat3_title: "안전한 완전 로컬 저장",
+        feat3_desc: "감정이나 호흡 로그를 수집하거나 서버로 보내지 않습니다. 모든 정보는 오로지 스마트폰 기기 내부 샌드박스에 완벽하게 오프라인 보관됩니다.",
+        feat4_title: "주기적 쉼 알림",
+        feat4_desc: "하루 일상 중 잠시 숨을 고르기 좋은 최적의 쉼 주기를 설정하여 이완 루틴을 자연스러운 일과 생활 습관으로 가꿔보세요.",
+        inhale: "천천히 들이마셔요",
+        hold: "잠시 머무르세요",
+        exhale: "가볍게 비우세요",
+        sub_inhale: "가슴 가득 시원한 공기를 담아봅니다.",
+        sub_hold: "고요함의 정점에 머물러 봅니다.",
+        sub_exhale: "가볍게 모든 긴장과 생각을 내보냅니다."
+      },
+      en: {
+        nav_features: "Features",
+        nav_privacy: "Privacy Policy",
+        hero_title: "Pause and<br><span>Gather Your Breath</span>",
+        hero_desc: "When your busy day demands a mindful pause, we are here to pacify your heart rate and restore deep, tranquil clarity.",
+        orb_idle: "Are you ready?",
+        orb_sub_idle: "Press the button below to experience a sample breathing cycle.",
+        btn_start: "Start Sample Session",
+        btn_stop: "Stop Session",
+        features_title: "Mindfulness Made Soothing",
+        feat1_title: "Atmospheric Breathing Orb",
+        feat1_desc: "Sync your awareness with the expanding and contracting glassmorphic orb, easing your nervous system instantly.",
+        feat2_title: "Mood Coherence Cycles",
+        feat2_desc: "Tailored breathing durations designed dynamically around your current emotional state to optimize restfulness.",
+        feat3_title: "Guaranteed Local Privacy",
+        feat3_desc: "Zero tracking. Your emotional logs and session duration stats stay securely on your local device storage sandbox.",
+        feat4_title: "Mindful Reminders",
+        feat4_desc: "Establish periodic rest alarms to naturally cultivate a calming habit of deep breathing in your daily life.",
+        inhale: "Inhale slowly",
+        hold: "Hold gently",
+        exhale: "Exhale softly",
+        sub_inhale: "Expand your lungs and fill your chest with fresh air.",
+        sub_hold: "Stay centered in the stillness of the apex.",
+        sub_exhale: "Empty your mind and release all tension."
+      }
+    };
+
+    let currentLang = "ko";
+    const langToggle = document.getElementById("langToggle");
+
+    function updateLanguage() {
+      const translation = translations[currentLang];
+      document.querySelector("a[href='#features']").innerText = translation.nav_features;
+      document.querySelector("a[href='privacy.html']").innerText = translation.nav_privacy;
+      document.getElementById("hero_title").innerHTML = translation.hero_title;
+      document.getElementById("hero_desc").innerText = translation.hero_desc;
+      document.getElementById("features_title").innerText = translation.features_title;
+      
+      // Feature cards
+      document.querySelector("[data-i18n='feat1_title']").innerText = translation.feat1_title;
+      document.querySelector("[data-i18n='feat1_desc']").innerText = translation.feat1_desc;
+      document.querySelector("[data-i18n='feat2_title']").innerText = translation.feat2_title;
+      document.querySelector("[data-i18n='feat2_desc']").innerText = translation.feat2_desc;
+      document.querySelector("[data-i18n='feat3_title']").innerText = translation.feat3_title;
+      document.querySelector("[data-i18n='feat3_desc']").innerText = translation.feat3_desc;
+      document.querySelector("[data-i18n='feat4_title']").innerText = translation.feat4_title;
+      document.querySelector("[data-i18n='feat4_desc']").innerText = translation.feat4_desc;
+
+      langToggle.innerText = currentLang === "ko" ? "English" : "한국어";
+
+      // Live updates to orb texts if idle
+      if (!isBreathing) {
+        document.getElementById("breatheStatus").innerText = translation.orb_idle;
+        document.getElementById("breatheSub").innerText = translation.orb_sub_idle;
+        document.getElementById("breatheBtn").innerText = translation.btn_start;
+      }
+    }
+
+    langToggle.addEventListener("click", () => {
+      currentLang = currentLang === "ko" ? "en" : "ko";
+      updateLanguage();
+    });
+
+    // Breathing simulator logic
+    let isBreathing = false;
+    let breathTimer = null;
+    let breathPhase = 0; // 0 = Inhale, 1 = Hold, 2 = Exhale
+    const breatheArea = document.getElementById("breatheArea");
+    const breatheStatus = document.getElementById("breatheStatus");
+    const breatheSub = document.getElementById("breatheSub");
+    const breatheBtn = document.getElementById("breatheBtn");
+
+    function runBreathingCycle() {
+      if (!isBreathing) return;
+
+      const translation = translations[currentLang];
+      
+      // Cycle: Inhale (4s) -> Hold (4s) -> Exhale (4s)
+      if (breathPhase === 0) {
+        breatheArea.className = "breathe-container inhale";
+        breatheStatus.innerText = translation.inhale;
+        breatheStatus.style.color = "var(--soft-mint)";
+        breatheSub.innerText = translation.sub_inhale;
+        
+        breathTimer = setTimeout(() => {
+          breathPhase = 1;
+          runBreathingCycle();
+        }, 4000);
+      } else if (breathPhase === 1) {
+        breatheArea.className = "breathe-container hold";
+        breatheStatus.innerText = translation.hold;
+        breatheStatus.style.color = "var(--soft-pink)";
+        breatheSub.innerText = translation.sub_hold;
+
+        breathTimer = setTimeout(() => {
+          breathPhase = 2;
+          runBreathingCycle();
+        }, 4000);
+      } else if (breathPhase === 2) {
+        breatheArea.className = "breathe-container exhale";
+        breatheStatus.innerText = translation.exhale;
+        breatheStatus.style.color = "var(--soft-purple)";
+        breatheSub.innerText = translation.sub_exhale;
+
+        breathTimer = setTimeout(() => {
+          breathPhase = 0;
+          runBreathingCycle();
+        }, 4000);
+      }
+    }
+
+    function toggleBreathing() {
+      const translation = translations[currentLang];
+      if (isBreathing) {
+        // Stop
+        isBreathing = false;
+        clearTimeout(breathTimer);
+        breatheArea.className = "breathe-container";
+        breatheStatus.innerText = translation.orb_idle;
+        breatheStatus.style.color = "var(--warm-ivory)";
+        breatheSub.innerText = translation.orb_sub_idle;
+        breatheBtn.innerText = translation.btn_start;
+      } else {
+        // Start
+        isBreathing = true;
+        breathPhase = 0;
+        breatheBtn.innerText = translation.btn_stop;
+        runBreathingCycle();
+      }
+    }
+
+    breatheBtn.addEventListener("click", toggleBreathing);
+  </script>
+</body>
+</html>
