@@ -91,6 +91,7 @@ breath-space/
 - `KEYSTORE_PATH`
 - `STORE_PASSWORD`
 - `KEY_PASSWORD`
+- `KEY_ALIAS` (선택, 기본 `upload`)
 
 ```bash
 # signed release APK 및 AAB 동시 빌드
@@ -99,6 +100,18 @@ breath-space/
 # Play Console 제출용 AAB/TXT를 바탕화면으로 내보내기
 ./gradlew :app:exportReleaseToDesktop
 ```
+
+### Play 출시 (GitHub Actions)
+
+Play 업로드는 [`.github/workflows/play-release.yml`](.github/workflows/play-release.yml)이 합니다. 올리는 트랙은 지금 쓰는 비공개 테스트(`alpha`) 하나이며, 프로덕션에는 올리지 않습니다.
+
+1. `app/build.gradle.kts`의 `versionCode`(+1)·`versionName`, `CHANGELOG.md`(`## [vX.Y.Z]` 항목), README의 현재 버전, `store-graphics/play-console-current/release-notes.txt`(`<ko-KR>`·`<en-US>` 블록, 각 500자 이하)를 맞춰 main에 머지합니다.
+2. `vX.Y.Z` 태그를 push하면 워크플로가 시작되고, GitHub 환경 `play`에서 jeiel85가 승인하면 실행됩니다. 단위 시험 → AAB 빌드 → 업로드 키 SHA-256 고정값 확인 → `alpha` 업로드 → 트랙 상태 출력 순서입니다. AAB와 출시 노트는 Actions 아티팩트로 30일 남습니다.
+3. 태그 없이 돌리려면 Actions 화면에서 **Play release → Run workflow**(version, `dry_run`)를 씁니다. `dry_run`은 빌드·서명 확인·트랙 조회까지만 하고 올리지 않습니다.
+
+- 태그 하나에 Play 업로드는 이 워크플로 한 번뿐입니다(이 저장소에 다른 릴리스 워크플로는 없습니다). 태그 push로 올린 버전을 `exportReleaseToDesktop` 산출물로 Play Console에 또 올리지 마세요 — 같은 `versionCode`는 Play가 거부합니다. 바탕화면 내보내기는 로컬 보관·수동 확인용으로만 씁니다.
+- 비밀값(업로드 키스토어 base64, 스토어/키 비밀번호, 별칭, Play 서비스 계정 키)은 환경 `play`의 Secrets에만 있습니다. 업로드 키를 바꾸면 Secrets와 워크플로의 `UPLOAD_CERT_SHA256`을 함께 고쳐야 합니다.
+- 업로드 스크립트 [`tools/play-publish.ps1`](tools/play-publish.ps1)은 전역 스킬 `play-publish` 스크립트의 복사본입니다.
 
 현재 버전: `v1.0.0`
 

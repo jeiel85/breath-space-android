@@ -1,0 +1,142 @@
+# Play용 AAB를 CI에서 빌드해 Play 비공개 테스트(alpha) 트랙에 올립니다(README "릴리즈 빌드 및 서명 정책").
+#
+# - 태그 vX.Y.Z가 올라오면 그 버전을 올립니다(AGENTS.md 버전 규칙: build.gradle.kts·CHANGELOG·README를 먼저 맞춘 뒤 태그).
+# - Actions 화면에서 손으로 돌릴 수도 있습니다(version 입력). dry_run을 켜면 빌드·서명 확인·트랙 조회까지만 하고 올리지 않습니다.
+# 비밀값은 GitHub 환경 'play'에만 있고, 그 환경은 jeiel85의 승인을 받아야 실행됩니다(main 브랜치·v* 태그만).
+name: Play release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '버전 (x.y.z, build.gradle.kts의 versionName과 같고 CHANGELOG에 항목이 있어야 함)'
+        required: true
+      dry_run:
+        description: '올리지 않고 빌드·서명 확인·트랙 조회만'
+        type: boolean
+        default: false
+
+concurrency:
+  group: play-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    environment: play
+    timeout-minutes: 40
+    env:
+      PACKAGE: com.jeiel85.breathspace
+      TRACK: alpha
+      # Play 업로드 키 인증서(.keystore/my-upload-key.jks, 별칭 upload). 다른 키로 서명된 번들은 올리기 전에 멈춥니다.
+      UPLOAD_CERT_SHA256: 'FA:5A:B3:82:B4:B7:AA:D8:AD:58:FE:D7:AE:16:0F:A8:60:5E:53:69:8E:AF:78:9B:61:FF:5D:B9:00:B1:77:E9'
+      KEYSTORE_PATH: ${{ github.workspace }}/.keystore/play-upload.jks
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 버전 정하기
+        id: ver
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          DRY: ${{ inputs.dry_run }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ]; then VER="${GITHUB_REF_NAME#v}"; else VER="${INPUT_VERSION#v}"; fi
+          [[ "$VER" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::버전은 x.y.z여야 합니다: $VER"; exit 1; }
+          grep -q "^## \[v$VER\]" CHANGELOG.md || { echo "::error::CHANGELOG.md에 [v$VER] 항목이 없습니다"; exit 1; }
+          NAME=$(sed -nE 's/^\s*versionName = "([^"]+)".*/\1/p' app/build.gradle.kts)
+          CODE=$(sed -nE 's/^\s*versionCode = ([0-9]+).*/\1/p' app/build.gradle.kts)
+          [ "$NAME" = "$VER" ] || { echo "::error::app/build.gradle.kts versionName($NAME)이 $VER와 다릅니다"; exit 1; }
+          [[ "$CODE" =~ ^[0-9]+$ ]] || { echo "::error::versionCode를 읽지 못했습니다"; exit 1; }
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "dry=${DRY:-false}" >> "$GITHUB_OUTPUT"
+          echo "v$VER / versionCode $CODE / dry_run=${DRY:-false}"
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: 서명 키 놓기
+        env:
+          KEYSTORE_B64: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_KEYSTORE_B64 }}
+        run: |
+          mkdir -p .keystore
+          printf '%s' "$KEYSTORE_B64" | base64 -d > "$KEYSTORE_PATH"
+          [ -s "$KEYSTORE_PATH" ]
+
+      - name: 업로드 키 지문 확인
+        env:
+          STORE_PASSWORD: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_KEY_ALIAS }}
+        run: |
+          FP=$(LC_ALL=C keytool -J-Duser.language=en -list -v -keystore "$KEYSTORE_PATH" -alias "$KEY_ALIAS" -storepass:env STORE_PASSWORD \
+            | sed -nE 's/^\s*SHA256: ([0-9A-F:]+).*/\1/p' | head -n1)
+          [ "$FP" = "$UPLOAD_CERT_SHA256" ] || { echo "::error::키스토어 인증서 SHA-256($FP)이 고정값과 다릅니다"; exit 1; }
+          echo "업로드 키 지문 일치: $FP"
+
+      - name: 시험·AAB 빌드
+        env:
+          STORE_PASSWORD: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.BREATHSPACE_PLAY_UPLOAD_KEY_ALIAS }}
+        run: |
+          ./gradlew --no-daemon :app:test :app:bundleRelease
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          [ -s "$AAB" ] || { echo "::error::AAB가 없습니다: $AAB"; exit 1; }
+          echo "AAB=$AAB" >> "$GITHUB_ENV"
+
+      - name: 출시 노트(store-graphics/play-console-current/release-notes.txt)
+        run: |
+          SRC=store-graphics/play-console-current/release-notes.txt
+          mkdir -p dist
+          awk '/<ko-KR>/{on=1; next} /<\/ko-KR>/{on=0} on' "$SRC" > dist/notes-ko.txt
+          awk '/<en-US>/{on=1; next} /<\/en-US>/{on=0} on' "$SRC" > dist/notes-en.txt
+          for f in dist/notes-ko.txt dist/notes-en.txt; do
+            [ -s "$f" ] || { echo "::error::$SRC에서 $f 블록을 읽지 못했습니다"; exit 1; }
+            n=$(python3 -c "import sys; print(len(open(sys.argv[1], encoding='utf-8').read().strip()))" "$f")
+            [ "$n" -le 500 ] || { echo "::error::$f가 500자를 넘습니다($n자)"; exit 1; }
+            echo "== $f ($n자)"; cat "$f"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: breathspace-play-${{ steps.ver.outputs.version }}
+          path: |
+            ${{ env.AAB }}
+            dist/notes-ko.txt
+            dist/notes-en.txt
+          retention-days: 30
+
+      - name: Play 트랙 상태(올리기 전)
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: pwsh -NoProfile -File tools/play-publish.ps1 -PackageName "$PACKAGE" -ShowTracks
+
+      - name: Alpha(비공개 테스트)에 올리기
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          CODE: ${{ steps.ver.outputs.code }}
+          DRY: ${{ steps.ver.outputs.dry }}
+        run: |
+          DRYFLAG=(); [ "$DRY" = true ] && DRYFLAG=(-DryRun)
+          pwsh -NoProfile -File tools/play-publish.ps1 -PackageName "$PACKAGE" -Track "$TRACK" -AabPath "$AAB" \
+            -ExpectedVersionCode "$CODE" -ExpectedUploadCertSha256 "$UPLOAD_CERT_SHA256" \
+            -NotesKoFile dist/notes-ko.txt -NotesEnFile dist/notes-en.txt "${DRYFLAG[@]}"
+
+      - name: Play 트랙 상태(올린 뒤)
+        if: steps.ver.outputs.dry != 'true'
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: pwsh -NoProfile -File tools/play-publish.ps1 -PackageName "$PACKAGE" -ShowTracks
+
+      - name: 키 지우기
+        if: always()
+        run: rm -f "$KEYSTORE_PATH"
